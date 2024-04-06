@@ -48,7 +48,7 @@ func (postgres *Postgres) Wallets() ([]wallet.Wallet, error) {
 	return wallets, nil
 }
 
-func (postgres *Postgres) GetByType(walletType string) ([]wallet.Wallet, error) {
+func (postgres *Postgres) WalletsByType(walletType string) ([]wallet.Wallet, error) {
 	query := `SELECT * FROM user_wallet WHERE wallet_type = $1`
 	rows, err := postgres.Database.Query(query, walletType)
 	if err != nil {
@@ -79,9 +79,9 @@ func (postgres *Postgres) GetByType(walletType string) ([]wallet.Wallet, error) 
 	}
 	return wallets, nil
 }
-func (postgres *Postgres) GetByUserID(user_id string) ([]wallet.Wallet, error) {
+func (postgres *Postgres) WalletsByUserID(id string) ([]wallet.Wallet, error) {
 	query := `SELECT * FROM user_wallet WHERE user_id = $1`
-	rows, err := postgres.Database.Query(query, user_id)
+	rows, err := postgres.Database.Query(query, id)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (postgres *Postgres) CreateWallet(wallet wallet.Wallet) (wallet.Wallet, err
 	return wallet, err
 }
 
-func (postgres *Postgres) UpdateByID(wallet wallet.Wallet) (wallet.Wallet, error) {
+func (postgres *Postgres) UpdateWallet(wallet wallet.Wallet) (wallet.Wallet, error) {
 	query := `
 		UPDATE user_wallet 
 		SET user_id = $2, user_name = $3, wallet_name = $4, wallet_type = $5, balance = $6
